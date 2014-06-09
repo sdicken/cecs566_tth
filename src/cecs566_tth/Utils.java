@@ -11,7 +11,7 @@ public class Utils
 	{
 		List<List<List<Integer>>> result = new ArrayList<List<List<Integer>>>();
 		List<Integer> output = new ArrayList<Integer>();
-		while(output != targetRunningTotal)
+		while(!output.equals(targetRunningTotal))
 		{
 			result = new ArrayList<List<List<Integer>>>();
 			List<List<Integer>> matrix = new ArrayList<List<Integer>>();
