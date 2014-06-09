@@ -7,27 +7,30 @@ import java.util.Random;
 
 public class Utils 
 {
-	public static List<List<Integer>> attack(List<Integer> targetRunningTotal)
+	public static String findMatchingHash(String targetHash)
 	{
 		List<List<List<Integer>>> result = new ArrayList<List<List<Integer>>>();
-		List<Integer> output = new ArrayList<Integer>();
-		while(!output.equals(targetRunningTotal))
+		String computedHash = new String();
+		while(!computedHash.equals(targetHash))
 		{
 			result = new ArrayList<List<List<Integer>>>();
-			List<List<Integer>> matrix = new ArrayList<List<Integer>>();
-			for(int i = 0; i < 4; i++)
+			for(int i = 0; i < 3; i++)
 			{
-				List<Integer> row = new ArrayList<Integer>();
+				List<List<Integer>> matrix = new ArrayList<List<Integer>>();
 				for(int j = 0; j < 4; j++)
 				{
-					row.add(new Random().nextInt(26));
+					List<Integer> row = new ArrayList<Integer>();
+					for(int k = 0; k < 4; k++)
+					{
+						row.add(new Random().nextInt(26));
+					}
+					matrix.add(row);
 				}
-				matrix.add(row);
+				result.add(matrix);
 			}
-			result.add(matrix);
-			output = compressionFunction(result);
+			computedHash = translateHashValueToLetters(compressionFunction(result));
 		}
-		return result.get(0);
+		return convert4x4MatricesToMessage(result);
 	}
 	
 	public static String preprocessMessage(String message)
@@ -80,6 +83,26 @@ public class Utils
 		return result;
 	}
 	
+	public static String convert4x4MatricesToMessage(List<List<List<Integer>>> matrices)
+	{
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < matrices.size(); i++)
+		{
+			List<List<Integer>> matrix = matrices.get(i);
+			for(int j = 0; j < matrix.size(); j++)
+			{
+				List<Integer> row = matrix.get(j);
+				for(int k = 0; k < row.size(); k++)
+				{
+					Integer val = row.get(k);
+					val += 97;	// make lowercase letter a-z
+					sb.append((char) val.byteValue());
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
 	public static List<Integer> compressionFunction(List<List<List<Integer>>> matrices4x4)
 	{
 		Integer [] initializationVector = { 0,0,0,0 };
@@ -98,7 +121,7 @@ public class Utils
 		return result;
 	}
 	
-	public static String translateTotalToLetters(List<Integer> runningTotal)
+	public static String translateHashValueToLetters(List<Integer> runningTotal)
 	{
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < runningTotal.size(); i++)

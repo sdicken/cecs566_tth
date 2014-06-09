@@ -125,7 +125,7 @@ public class UtilsTest
 		String expected = "BFQG";
 		Integer [] expectedNumbers = { 1,5,16,6 };
 		List<Integer> runningTotal = Arrays.asList(expectedNumbers);
-		String actual = Utils.translateTotalToLetters(runningTotal);
+		String actual = Utils.translateHashValueToLetters(runningTotal);
 		assertTrue(expected.equals(actual));
 	}
 }
